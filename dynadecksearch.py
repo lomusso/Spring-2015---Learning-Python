@@ -8,7 +8,7 @@ Created on Tue Feb 24 20:35:39 2015
 
 
 def main():
-    fh = open('dynadeck.txt')
+    fh = open('dynadeck.txt','r')
     lines = fh.readlines()
     c = 0
     d = 0
