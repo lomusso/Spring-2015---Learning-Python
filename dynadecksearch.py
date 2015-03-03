@@ -8,19 +8,28 @@ Created on Tue Feb 24 20:35:39 2015
 
 
 def main():
-    fh = open('dynadeck.txt')
-    lines = fh.readlines()
-    c = 0
-    d = 0
-    while c < 1:
-        for lines in fh:
-            if 'CONTROL_TERMINATION' in lines:
-                c = 1
-            else:
-                c = 0
-            d += 1
-    split_line = lines[d+1].split(",")
-    termination_time = split_line[0]
-    print(termination_time)
-        
+    fname = 'dynadeck.txt'
+
+    termination_time = extract_time(fname, 'CONTROL_TERMINATION')
+    time_step = extract_time(fname, 'BLAH')
+
+    something = calc_num_times()
+
+def extract_time(fname, keyword):
+    """
+    return the first word on the next line after keyword in fname
+    """
+    keyword_found = False
+
+    with open(fname) as f:
+        for line in f:
+            if keyword_found is True:
+                t = line.split(',')[0]
+                break
+            elif keyword in line:
+                keyword_found = True
+
+    return t
+
+
 if __name__ == "__main__": main()
