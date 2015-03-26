@@ -55,14 +55,9 @@ void loop(){
     
     pressureTrans.test();
     genie.SwitchScreen_resting();
-    int number_trials = 1;
-    float pressure_values[6] = {pressureTrans.pressure, 0, 0, 0, 0, 0};
-    if (number_trials < 3) {
-      genie.SwitchScreen_retest;
-      pressureTrans.test();
-      genie.SwitchScreen_resting();
-      pressure_values[number_trials] = pressureTrans.pressure;
-      number_trials = number_trials++;
+    
+    if (pressureTrans.number_trials < 3) {
+      Retest();
     }
     
     /* ==== Is more testing needed? ====
@@ -73,43 +68,12 @@ void loop(){
      *        on the touchscreen.
      */
      
-     if (pressure_values[2] > pressure_values[1]) {
-       genie.SwitchScreen_retest;
-       pressureTrans.test();
-       genie.SwitchScreen_resting();
-       pressure_values[number_trials] = pressureTrans.pressure;
-       number_trials = number_trials++;
+     else if (pressureTrans.pressure_values[pressureTrans.number_trials-1] > pressureTrans.pressure_values[pressureTrans.number_trials-2] && pressureTrans.number_trials < 6) {
+       Retest();
      }
      
      else {
-       pressureTrans.calculate_results();
-       genie.DisplayResults();
-     }
-     
-     if (pressure_values[3] > pressure_values[2]) {
-       genie.SwitchScreen_retest;
-       pressureTrans.test();
-       genie.SwitchScreen_resting();
-       pressure_values[number_trials] = pressureTrans.pressure;
-       number_trials = number_trials++;
-     }
-     
-     else {
-       pressureTrans.calculate_stats();
-       genie.DisplayResults();
-     }
-     
-     if (pressure_values[4] > pressure_values[3]) {
-       genie.SwitchScreen_retest;
-       pressureTrans.test();
-       genie.SwitchScreen_resting();
-       pressure_values[number_trials] = pressureTrans.pressure;
-       number_trials = number_trials++;
-     }
-     
-     else {
-       pressureTrans.calculate_stats();
-       genie.DisplayResults();
+       DoneTesting();
      }
      
      /* ==== Further Testing ====
@@ -121,4 +85,20 @@ void loop(){
       if (test_from_start == true) {
         genie.StartOver();
       }
-} 
+}
+
+void Retest() {
+  genie.SwitchScreen_retest;
+  pressureTrans.test();
+  genie.SwitchScreen_resting();
+  pressure_values[number_trials] = pressureTrans.pressure;
+  number_trials++;
+}
+
+void DoneTesting() {
+  pressureTrans.calculate_stats();
+  genie.DisplayResults();
+}
+  
+
+

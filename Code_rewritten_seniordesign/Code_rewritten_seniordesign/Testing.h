@@ -7,8 +7,10 @@ class Testing {
 public:
 	Testing(int pin);
 	void test();
-	void calculate_stats;
+	void calculate_stats();
 	float pressure;
+        int number_trials = 0;
+        float pressure_values[6] = {0, 0, 0, 0, 0, 0};
 	float average_pressure;
 	float standard_deviation;
 	float coeff_var;
