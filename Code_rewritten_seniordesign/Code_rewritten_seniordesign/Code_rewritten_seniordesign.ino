@@ -91,8 +91,6 @@ void Retest() {
   genie.SwitchScreen_retest;
   pressureTrans.test();
   genie.SwitchScreen_resting();
-  pressure_values[number_trials] = pressureTrans.pressure;
-  number_trials++;
 }
 
 void DoneTesting() {
