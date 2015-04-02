@@ -21,11 +21,11 @@ void setup(){
   digitalWrite(RESETLINE, 0);
   delay(3500);
   genie.WriteContrast(1);
+  // Display TestID form on touchscreen
+  genie.WriteObject(GENIE_OBJ_FORM, 0x00, 0);
 }
 
 void loop(){
-  // Display TestID form on touchscreen
-  genie.WriteObject(GENIE_OBJ_FORM, 0x00, 0);
   
   /* ==== Entering Test ID and Rest Time ====
    * Before testing can begin:
@@ -73,7 +73,8 @@ void loop(){
      }
      
      else {
-       DoneTesting();
+       pressureTrans.calculate_stats();
+       DisplayResults();
      }
      
      /* ==== Further Testing ====
@@ -85,6 +86,7 @@ void loop(){
       if (test_from_start == true) {
         genie.StartOver();
       }
+      
 }
 
 void Retest() {
@@ -93,10 +95,11 @@ void Retest() {
   genie.SwitchScreen_resting();
 }
 
-void DoneTesting() {
-  pressureTrans.calculate_stats();
-  genie.DisplayResults();
+void DisplayResults() {
+  genie.WriteObject(GENIE_OBJ_FORM, 0x06, 0); // go to Calculate Results form
+  //Write mean, standard deviation, coefficient of variation, and average rest time to the Screen
+  genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x03, pressureTrans.average_pressure*100.0);
+  genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x04, pressureTrans.standard_deviation*100.0);
+  genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x05, pressureTrans.coef_var*100.0);
+  genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0x06, (genie.total_rest/(pressureTrans.number_trials-1))*100.0);
 }
-  
-
-

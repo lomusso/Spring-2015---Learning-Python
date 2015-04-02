@@ -65,5 +65,3 @@ void Testing::calculate_stats() {
 	// Calculate the coefficient of variation.
 	coeff_var = standard_deviation/average_pressure;
 }    
-
-//Write a function for saving pressure_values
