@@ -6,14 +6,25 @@ Testing::Testing(int pin) {
 	_pin = pin;
 }
 
+void Testing::reset() {
+  _offset = 0;
+  for (int n = 0; n < 1000; n++){
+    _offset = _offset + analogRead(_pin);
+    delay(5);
+  } 
+  _offset = _offset/1000;
+  number_trials = 0;
+  pressure_values[6] = {0, 0, 0, 0, 0, 0};
+}
+
 void Testing::test() { 
     _max_pressure = 0;
     _test_time = 0;
     _start_time = millis();
     while(_test_time < _test_duration + _start_time) {  
     	_test_time = millis();
-        pressure = analogRead(_pin); 
-        pressure = pressure*(5.0/1023.0) - _offset;
+        pressure = analogRead(_pin) - _offset; 
+        pressure = pressure*(5.0/1023.0);
         _max_pressure = max(_max_pressure, pressure);
     }
     pressure = _max_pressure*_scale*100;
